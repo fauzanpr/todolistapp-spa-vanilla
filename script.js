@@ -4,6 +4,40 @@ const root = document.getElementById("root");
 const homePage = HomePage();
 root.append(homePage);
 
+function Link(props) {
+  const link = document.createElement('a');
+  link.href = props.href;
+  link.textContent = props.label;
+  link.onclick = function (event) {
+    event.preventDefault();
+    root.textContent = '';
+    const component = props.Component();
+    root.append(component);
+    history.pushState(null, '', props.href);
+  }
+  return link;
+}
+
+function Navbar() {
+  const div = document.createElement("div");
+  const linkHome = Link({
+    href: '#home',
+    label: 'Home',
+    Component: HomePage
+  });
+
+  const linkAbout = Link({
+    href: '#about',
+    label: 'About',
+    Component: AboutPage
+  });
+
+  div.append(linkHome);
+  div.append(linkAbout);
+
+  return div;
+}
+ 
 function HomePage() {
   const navbar = Navbar();
   const welcoming = document.createElement("h4");
@@ -18,16 +52,11 @@ function HomePage() {
 }
 
 function AboutPage() {
-  const linkBack = document.createElement("a");
-  linkBack.href = "#home";
-  linkBack.textContent = "Back to Home";
-  linkBack.onclick = function (event) {
-    event.preventDefault();
-    root.textContent = "";
-    const homePage = HomePage();
-    root.append(homePage);
-    history.pushState(null, "", "#home");
-  };
+  const linkBack = Link({
+    href: '#home',
+    label: 'Back to home',
+    Component: HomePage
+  });
   const welcoming = document.createElement("h4");
   welcoming.textContent = "About Me";
   const paragraph = document.createElement("p");
@@ -37,36 +66,6 @@ function AboutPage() {
   div.append(linkBack);
   div.append(welcoming);
   div.append(paragraph);
-  return div;
-}
-
-function Navbar() {
-  const div = document.createElement("div");
-  const linkHome = document.createElement("a");
-  linkHome.href = "#home";
-  linkHome.textContent = "Home";
-  linkHome.onclick = function (event) {
-    event.preventDefault();
-    const homePage = HomePage();
-    root.textContent = "";
-    root.append(homePage);
-    history.pushState(null, "", "#home");
-  };
-
-  const linkAbout = document.createElement("a");
-  linkAbout.href = "#about";
-  linkAbout.textContent = "About";
-  linkAbout.onclick = function (event) {
-    event.preventDefault();
-    const aboutPage = AboutPage();
-    root.textContent = "";
-    root.append(aboutPage);
-    history.pushState(null, "", "#about");
-  };
-
-  div.append(linkHome);
-  div.append(linkAbout);
-
   return div;
 }
 
