@@ -2,6 +2,7 @@
 
 let state = {
   inputValue: '',
+  hash: location.hash,
 };
 
 function setState(newState) {
@@ -15,6 +16,8 @@ function Link(props) {
   link.textContent = props.label;
   link.onclick = function (event) {
     event.preventDefault();
+    const url = new URL(event.target.href);
+    setState({ hash: url.hash });
     history.pushState(null, "", props.href);
     render();
   };
@@ -85,9 +88,9 @@ function AboutPage() {
 function App() {
   const homePage = HomePage();
   const aboutPage = AboutPage();
-  if (location.hash === "#home") {
+  if (state.hash === "#home") {
     return homePage;
-  } else if (location.hash === "#about") {
+  } else if (state.hash === "#about") {
     return aboutPage;
   }
 }
@@ -95,7 +98,7 @@ function App() {
 function render() {
   const root = document.getElementById("root");
   location.hash = location.hash || '#home';
-  
+
   const foccusedElementId = document.activeElement.id;
   const foccusedSelectionStart = document.activeElement.selectionStart;
   const foccusedSelectionEnd = document.activeElement.selectionEnd;
@@ -104,7 +107,6 @@ function render() {
   const app = App();
   root.append(app);
 
-  console.log(foccusedElementId);
   if (foccusedElementId) {
     const foccusedElement = document.getElementById(foccusedElementId);
     foccusedElement.focus();
