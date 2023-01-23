@@ -1,43 +1,34 @@
 "use strict";
 
-const root = document.getElementById("root");
-const homePage = HomePage();
-root.append(homePage);
-
 function Link(props) {
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = props.href;
   link.textContent = props.label;
   link.onclick = function (event) {
     event.preventDefault();
-    root.textContent = '';
-    const component = props.Component();
-    root.append(component);
-    history.pushState(null, '', props.href);
-  }
+    history.pushState(null, "", props.href);
+    render();
+  };
   return link;
 }
 
 function Navbar() {
   const div = document.createElement("div");
   const linkHome = Link({
-    href: '#home',
-    label: 'Home',
-    Component: HomePage
+    href: "#home",
+    label: "Home",
   });
 
   const linkAbout = Link({
-    href: '#about',
-    label: 'About',
-    Component: AboutPage
+    href: "#about",
+    label: "About",
   });
 
   div.append(linkHome);
   div.append(linkAbout);
-
   return div;
 }
- 
+
 function HomePage() {
   const navbar = Navbar();
   const welcoming = document.createElement("h4");
@@ -53,9 +44,8 @@ function HomePage() {
 
 function AboutPage() {
   const linkBack = Link({
-    href: '#home',
-    label: 'Back to home',
-    Component: HomePage
+    href: "#home",
+    label: "Back to home",
   });
   const welcoming = document.createElement("h4");
   welcoming.textContent = "About Me";
@@ -69,10 +59,21 @@ function AboutPage() {
   return div;
 }
 
-if (location.hash === "#home") {
-  root.textContent = "";
-  root.append(HomePage());
-} else if (location.hash === "#about") {
-  root.textContent = "";
-  root.append(AboutPage());
+function App() {
+  const homePage = HomePage();
+  const aboutPage = AboutPage();
+  if (location.hash === "#home") {
+    return homePage;
+  } else if (location.hash === "#about") {
+    return aboutPage;
+  }
 }
+
+function render() {
+  const root = document.getElementById("root");
+  root.textContent = "";
+  const app = App();
+  root.append(app);
+}
+
+render();
