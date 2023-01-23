@@ -1,5 +1,14 @@
 "use strict";
 
+let state = {
+  inputValue: '',
+};
+
+function setState(newState) {
+  state = {...state, ...newState};
+  render();
+}
+
 function Link(props) {
   const link = document.createElement("a");
   link.href = props.href;
@@ -32,13 +41,26 @@ function Navbar() {
 function HomePage() {
   const navbar = Navbar();
   const welcoming = document.createElement("h4");
+  const outputText = document.createElement('p');
+  const btnClear = document.createElement('button');
+  btnClear.textContent = 'Clear';
   welcoming.textContent = "Welcome to Home";
+  outputText.textContent = state.inputValue;
   const input = document.createElement("input");
+  input.value = state.inputValue;
+  input.oninput = function (event) {
+    setState({ inputValue: event.target.value });
+  }
+  btnClear.onclick = function () {
+    setState({ inputValue: '' });
+  }
   input.placeholder = "Enter Here!";
   const div = document.createElement("div");
   div.append(navbar);
   div.append(welcoming);
   div.append(input);
+  div.append(btnClear);
+  div.append(outputText);
   return div;
 }
 
