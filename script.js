@@ -47,6 +47,7 @@ function HomePage() {
   welcoming.textContent = "Welcome to Home";
   outputText.textContent = state.inputValue;
   const input = document.createElement("input");
+  input.id = 'input';
   input.value = state.inputValue;
   input.oninput = function (event) {
     setState({ inputValue: event.target.value });
@@ -93,10 +94,23 @@ function App() {
 
 function render() {
   const root = document.getElementById("root");
-  root.textContent = "";
   location.hash = location.hash || '#home';
+  
+  const foccusedElementId = document.activeElement.id;
+  const foccusedSelectionStart = document.activeElement.selectionStart;
+  const foccusedSelectionEnd = document.activeElement.selectionEnd;
+
+  root.textContent = "";
   const app = App();
   root.append(app);
+
+  console.log(foccusedElementId);
+  if (foccusedElementId) {
+    const foccusedElement = document.getElementById(foccusedElementId);
+    foccusedElement.focus();
+    foccusedElement.selectionStart = foccusedSelectionStart;
+    foccusedElement.selectionEnd = foccusedSelectionEnd;
+  }
 }
 
 render();
