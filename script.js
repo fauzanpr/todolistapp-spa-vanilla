@@ -72,6 +72,7 @@ function App() {
 function render() {
   const root = document.getElementById("root");
   root.textContent = "";
+  location.hash = location.hash || '#home';
   const app = App();
   root.append(app);
 }
