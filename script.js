@@ -1,13 +1,25 @@
 "use strict";
 
 let state = {
-  inputValue: '',
+  inputValue: localStorage.getItem('inputValue'),
   hash: location.hash,
 };
 
 function setState(newState) {
-  state = {...state, ...newState};
+  const prevState = {...state};
+  const nextState = {...state, ...newState}
+  state = {...nextState};
   render();
+  onStateChange(prevState, nextState);
+}
+
+function onStateChange(prevState, nextState) {
+  if (prevState.inputValue !== nextState.inputValue) {
+    localStorage.setItem('inputValue', nextState.inputValue);
+  }
+  if (prevState.hash !== nextState.hash) {
+    history.pushState(null, "", nextState.hash);
+  }
 }
 
 function Link(props) {
@@ -18,7 +30,6 @@ function Link(props) {
     event.preventDefault();
     const url = new URL(event.target.href);
     setState({ hash: url.hash });
-    history.pushState(null, "", props.href);
     render();
   };
   return link;
@@ -97,7 +108,7 @@ function App() {
 
 function render() {
   const root = document.getElementById("root");
-  location.hash = location.hash || '#home';
+  state.hash = location.hash || '#home';
 
   const foccusedElementId = document.activeElement.id;
   const foccusedSelectionStart = document.activeElement.selectionStart;
