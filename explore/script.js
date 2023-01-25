@@ -7,7 +7,7 @@ let state = {
 
 function setState(newState) {
   const prevState = {...state};
-  const nextState = {...state, ...newState}
+  const nextState = {...state, ...newState};
   state = {...nextState};
   render();
   onStateChange(prevState, nextState);
