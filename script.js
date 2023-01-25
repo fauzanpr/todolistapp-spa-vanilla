@@ -5,12 +5,15 @@ function HomePage() {
     const addTodoListInput = document.createElement('input');
     const btnTodoList = document.createElement('button');
     const todolistContainer = document.createElement('ul');
-    todolistContainer.append(Todo({
-        content: 'Todo 1'
-    }));
-    todolistContainer.append(Todo({
-        content: 'Todo 2'
-    }));
+
+    btnTodoList.onclick = function(event) {
+        if (addTodoListInput.value) {
+            todolistContainer.append(Todo({
+                content: addTodoListInput.value
+            }));
+            addTodoListInput.value = '';
+        }
+    }
     btnTodoList.textContent = 'Add';
     homePage.append(addTodoListInput);
     homePage.append(btnTodoList);
