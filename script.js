@@ -1,5 +1,13 @@
 'use strict';
 
+let state = {
+    todo: [],
+};
+
+function setState(newState) {
+    state = {...state, ...newState};
+}
+
 function HomePage() {
     const homePage = document.createElement('div');
     const addTodoListInput = document.createElement('input');
@@ -8,9 +16,9 @@ function HomePage() {
 
     btnTodoList.onclick = function(event) {
         if (addTodoListInput.value) {
-            todolistContainer.append(Todo({
-                content: addTodoListInput.value
-            }));
+            setState({
+                todo: [...state.todo, addTodoListInput.value],
+            });
             addTodoListInput.value = '';
         }
     }
@@ -24,6 +32,10 @@ function HomePage() {
 function Todo(props) {
     const todolist = document.createElement('li');
     todolist.textContent = props.content;
+    const btnDelete = document.createElement('button');
+    btnDelete.textContent = `${props.id}`;
+    btnDelete.id = `${props.id}`;
+    todolist.append(btnDelete);
     return todolist;
 }
 
