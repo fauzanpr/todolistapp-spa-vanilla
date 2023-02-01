@@ -1,7 +1,7 @@
 "use strict";
 
 let state = {
-  todo: [],
+  todo: JSON.parse(localStorage.getItem('todo')),
 };
 
 function setState(newState) {
