@@ -5,8 +5,12 @@ let state = {
 };
 
 function setState(newState) {
+  const prevState = { ...state };
+  let nextState;
   if (newState.todo) {
-    state.todo.push(newState.todo);
+    const arr = [...state.todo, newState.todo];
+    state.todo = arr;
+    nextState = { ...state };
   } else if (newState.deleted) {
     let arr = [];
     for (const todo of state.todo) {
@@ -15,13 +19,20 @@ function setState(newState) {
       }
     }
     state.todo = [...arr];
+    nextState = { ...state };
   } else {
-    state = { ...state, ...newState };
+    nextState = { ...state, ...newState };
+    state = { ...nextState };
   }
+  onStateChange(prevState, nextState);
   render();
 }
 
-function onStateChange(prevState, nextState) {}
+function onStateChange(prevState, nextState) {
+  if (prevState.todo.length !== nextState.todo.length) {
+    localStorage.setItem('todo', JSON.stringify(state.todo));
+  }
+}
 
 function HomePage() {
   const homePage = document.createElement("div");
