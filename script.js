@@ -7,6 +7,14 @@ let state = {
 function setState(newState) {
   if (newState.todo) {
     state.todo.push(newState.todo);
+  } else if (newState.deleted) {
+    let arr = [];
+    for (const todo of state.todo) {
+      if (todo !== newState.deleted) {
+        arr.push(todo);
+      }
+    }
+    state.todo = [...arr];
   } else {
     state = { ...state, ...newState };
   }
@@ -41,10 +49,14 @@ function HomePage() {
 
 function Todo(props) {
   const todolist = document.createElement("li");
+  todolist.id = props.id;
   todolist.textContent = props.content;
   const btnDelete = document.createElement("button");
-  btnDelete.textContent = `${props.id}`;
+  btnDelete.textContent = 'Delete';
   btnDelete.id = `${props.id}`;
+  btnDelete.onclick = function() {
+    setState({ deleted: props.content });
+  }
   todolist.append(btnDelete);
   return todolist;
 }
