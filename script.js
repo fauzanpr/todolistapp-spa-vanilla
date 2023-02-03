@@ -34,11 +34,29 @@ function onStateChange(prevState, nextState) {
   }
 }
 
+function Header() {
+  const header = document.createElement('div');
+  const linkHome = document.createElement('a');
+  linkHome.href = '#';
+  linkHome.textContent = 'Home';
+  const linkTodo = document.createElement('a');
+  linkTodo.href = '#';
+  linkTodo.textContent = 'Todolist';
+  linkHome.onclick = function (event) {
+    event.preventDefault();
+
+  }
+  header.append(linkHome);
+  header.append(linkTodo);
+  return header;
+}
+
 function HomePage() {
   const homePage = document.createElement("div");
   const addTodoListInput = document.createElement("input");
   const btnTodoList = document.createElement("button");
   const todolistContainer = document.createElement("ul");
+  const header = Header();
 
   btnTodoList.onclick = function () {
     if (addTodoListInput.value) {
@@ -52,6 +70,7 @@ function HomePage() {
     }
   }
   btnTodoList.textContent = "Add";
+  homePage.append(header);
   homePage.append(addTodoListInput);
   homePage.append(btnTodoList);
   homePage.append(todolistContainer);
